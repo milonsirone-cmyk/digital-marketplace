@@ -2,8 +2,23 @@ import React,{useEffect,useState} from 'react'
 import {createRoot} from 'react-dom/client'
 import {Search,ShoppingBag,LayoutGrid,Settings,Package,ShieldCheck,Plus,ExternalLink} from 'lucide-react'
 import './style.css'
+const API_BASE = 'https://employee-flower-conventional-right.trycloudflare.com/api';
 
-const api=async(path,opt={})=>{const r=await fetch('/api'+path,{headers:{'Content-Type':'application/json'},...opt}); if(!r.ok) throw Error(await r.text()); return r.json()}
+const api = async (path, opt = {}) => {
+  const r = await fetch(API_BASE + path, {
+    headers: {
+      'Content-Type': 'application/json',
+      ...(opt.headers || {})
+    },
+    ...opt
+  });
+
+  if (!r.ok) {
+    throw Error(await r.text());
+  }
+
+  return r.json();
+};
 const demoCats=Array.from({length:50},(_,i)=>({id:i+1,name:`Category ${String(i+1).padStart(2,'0')}`,slug:`category-${i+1}`,icon:'grid'}))
 function App(){
  const [cats,setCats]=useState([]),[cat,setCat]=useState(null),[products,setProducts]=useState([]),[search,setSearch]=useState(''),[admin,setAdmin]=useState(false),[orders,setOrders]=useState([])
